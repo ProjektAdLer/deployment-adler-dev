@@ -37,7 +37,7 @@ services:
       - "traefik.http.routers.moodle_${_DEPLOYMENT_NAME}.rule=Host(`${_URL_MOODLE}`)"
       - "traefik.http.routers.moodle_${_DEPLOYMENT_NAME}.tls=true"
       - "traefik.http.routers.moodle_${_DEPLOYMENT_NAME}.tls.certresolver=le"
-    env-file:
+    env_file:
       - stack.env
 
   db_moodle:
@@ -54,7 +54,7 @@ services:
     networks:
       - internal
     restart: unless-stopped
-    env-file:
+    env_file:
       - stack.env
 
   db_backend:
@@ -71,7 +71,7 @@ services:
     networks:
       - internal
     restart: unless-stopped
-    env-file:
+    env_file:
       - stack.env
 
   backend:
@@ -101,7 +101,7 @@ services:
       - "traefik.http.routers.api_${_DEPLOYMENT_NAME}.tls.certresolver=le"
       - "traefik.http.services.api_${_DEPLOYMENT_NAME}.loadbalancer.server.port=80"
     restart: unless-stopped
-    env-file:
+    env_file:
       - stack.env
 
   frontend:
@@ -117,7 +117,7 @@ services:
       - "traefik.http.routers.3d_${_DEPLOYMENT_NAME}.tls.certresolver=le"
       - "traefik.http.services.3d_${_DEPLOYMENT_NAME}.loadbalancer.server.port=80"
     restart: unless-stopped
-    env-file:
+    env_file:
       - stack.env
 
   phpmyadmin:
@@ -125,8 +125,8 @@ services:
     environment:
       PMA_HOSTS: db_moodle,db_backend
       PMA_PORT: 3306
-#      PMA_USER: root
-#      PMA_PASSWORD: ${_DB_ROOT_PW}
+      PMA_USER: root
+      PMA_PASSWORD: ${_DB_ROOT_PW}
     restart: unless-stopped
     networks:
       - internal
@@ -135,7 +135,7 @@ services:
       - db_backend
     ports:
       - 127.0.0.1:8180:80
-    env-file:
+    env_file:
       - stack.env
 
 volumes:
