@@ -41,7 +41,7 @@ services:
       - stack.env
 
   db_moodle:
-    image: docker.io/bitnami/mariadb:10.6
+    image: docker.io/bitnami/mariadb:10.11
     environment:
       MARIADB_USER: ${_DB_MOODLE_USER}
       MARIADB_PASSWORD: ${_DB_MOODLE_PW}
@@ -58,7 +58,7 @@ services:
       - stack.env
 
   db_backend:
-    image: docker.io/bitnami/mariadb:10
+    image: docker.io/bitnami/mariadb:10.11
     environment:
       MARIADB_USER: ${_DB_BACKEND_USER}
       MARIADB_PASSWORD: ${_DB_BACKEND_PW}
