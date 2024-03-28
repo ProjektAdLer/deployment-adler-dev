@@ -105,7 +105,7 @@ services:
       - stack.env
 
   frontend:
-    image: ghcr.io/projektadler/2d_3d_adler:2.1.1
+    image: ghcr.io/projektadler/2d_3d_adler:2.2.0
     networks:
       - traefik_gateway
     environment:
