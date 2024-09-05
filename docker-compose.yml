@@ -107,11 +107,12 @@ services:
       - stack.env
 
   frontend:
-    image: ghcr.io/projektadler/2d_3d_adler:2.4.0
+    image: ghcr.io/projektadler/2d_3d_adler:main
     networks:
       - traefik_gateway
     environment:
       API_URL: "https://${_URL_BACKEND}/api"
+      MOODLE_URL: "https://${_URL_MOODLE}"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.3d_${_DEPLOYMENT_NAME}.rule=Host(`${_URL_3D}`)"
