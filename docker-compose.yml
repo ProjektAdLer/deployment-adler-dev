@@ -76,7 +76,7 @@ services:
       - stack.env
 
   backend:
-    image: ghcr.io/projektadler/adlerbackend:2.2.2
+    image: ghcr.io/projektadler/adlerbackend:2.3.0
     environment:
       ASPNETCORE_ENVIRONMENT: "Production"
       ASPNETCORE_DBUSER: ${_DB_BACKEND_USER}
