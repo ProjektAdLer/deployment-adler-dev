@@ -1,0 +1,69 @@
+services:
+  moodle:
+    ports: []
+    environment:
+      DECLARATIVE_SETUP_MANAGER_PASSWORD: ${_USER_MANAGER_PW}
+      DECLARATIVE_SETUP_STUDENT_PASSWORD: ${_USER_STUDENT_PW}
+      ADLER_PLAYBOOK_ROLES: "test_users"
+    networks:
+      - traefik_gateway
+      - internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.moodle_${_DEPLOYMENT_NAME}.rule=Host(`${_URL_MOODLE}`)"
+      - "traefik.http.routers.moodle_${_DEPLOYMENT_NAME}.tls=true"
+      - "traefik.http.routers.moodle_${_DEPLOYMENT_NAME}.tls.certresolver=le"
+      - "traefik.http.routers.moodle_${_DEPLOYMENT_NAME}.entrypoints=websecure"
+    env_file:
+      - stack.env
+
+  db_moodle:
+    networks:
+      - internal
+    env_file:
+      - stack.env
+
+  db_backend:
+    networks:
+      - internal
+    env_file:
+      - stack.env
+
+  backend:
+    ports: []
+    networks:
+      - traefik_gateway
+      - internal
+    environment:
+      ASPNETCORE_ADLER_MOODLEURL: https://${_URL_MOODLE}
+#      ASPNETCORE_ADLER_USEHTTPS: false  # dont think this is required
+      ASPNETCORE_ADLER_ADLERENGINEURL: https://${_URL_3D}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api_${_DEPLOYMENT_NAME}.rule=Host(`${_URL_BACKEND}`)"
+      - "traefik.http.routers.api_${_DEPLOYMENT_NAME}.tls=true"
+      - "traefik.http.routers.api_${_DEPLOYMENT_NAME}.tls.certresolver=le"
+      - "traefik.http.routers.api_${_DEPLOYMENT_NAME}.entrypoints=websecure"
+      - "traefik.http.services.api_${_DEPLOYMENT_NAME}.loadbalancer.server.port=80"
+    env_file:
+      - stack.env
+
+  frontend:
+    ports: []
+    networks:
+      - traefik_gateway
+    environment:
+      API_URL: "https://${_URL_BACKEND}/api"
+      MOODLE_URL: "https://${_URL_MOODLE}"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.3d_${_DEPLOYMENT_NAME}.rule=Host(`${_URL_3D}`)"
+      - "traefik.http.routers.3d_${_DEPLOYMENT_NAME}.tls=true"
+      - "traefik.http.routers.3d_${_DEPLOYMENT_NAME}.tls.certresolver=le"
+      - "traefik.http.routers.3d_${_DEPLOYMENT_NAME}.entrypoints=websecure"
+      - "traefik.http.services.3d_${_DEPLOYMENT_NAME}.loadbalancer.server.port=80"
+    env_file:
+      - stack.env
+
+
+

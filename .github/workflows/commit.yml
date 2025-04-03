@@ -1,0 +1,54 @@
+name: Update Docker Compose File
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-docker-compose:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Get AdLer Stack Version
+        id: get-version
+        run: |
+          if [ -f adler_version.yml ]; then
+            version=$(yq '.AdLerStack' adler_version.yml)
+            echo "version=$version" >> $GITHUB_OUTPUT
+          else
+            echo "Error: adler_version.yml file not found"
+            exit 1
+          fi
+
+      - name: Download Docker Compose File
+        run: |
+          wget -O docker-compose.yml "https://packages.projekt-adler.eu/packages/adler_stack/${{ steps.get-version.outputs.version }}.docker-compose.yml"
+
+      - name: Checkout Deploy Branch
+        uses: actions/checkout@v4
+        with:
+          path: deploy-branch
+      - name: change or create branch to deploy
+        run: |
+          cd deploy-branch
+          git checkout deploy || (git checkout --orphan deploy && git rm --cached -r .)
+
+      - name: Copy Files to Deploy Branch
+        run: |
+          cp docker-compose.yml docker-compose.override.yml .env deploy-branch/
+
+      - name: Commit Changes to Deploy Branch
+        run: |
+          cd deploy-branch
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add docker-compose.yml
+          git add .env
+          git add docker-compose.override.yml
+          git commit -m "Update deployment files to version ${{ steps.get-version.outputs.version }}" || echo "No changes to commit"
+          git push -f --set-upstream origin deploy
