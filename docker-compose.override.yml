@@ -1,6 +1,5 @@
 services:
   moodle:
-    ports: []
     environment:
       DECLARATIVE_SETUP_MANAGER_PASSWORD: ${_USER_MANAGER_PW}
       DECLARATIVE_SETUP_STUDENT_PASSWORD: ${_USER_STUDENT_PW}
@@ -30,7 +29,6 @@ services:
       - stack.env
 
   backend:
-    ports: []
     networks:
       - traefik_gateway
       - internal
@@ -49,7 +47,6 @@ services:
       - stack.env
 
   frontend:
-    ports: []
     networks:
       - traefik_gateway
     environment:
@@ -65,5 +62,7 @@ services:
     env_file:
       - stack.env
 
-
-
+networks:
+  traefik_gateway:
+    external: true
+  internal:
