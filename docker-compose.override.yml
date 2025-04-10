@@ -13,6 +13,15 @@ services:
       - "traefik.http.routers.moodle_${_DEPLOYMENT_NAME}.tls=true"
       - "traefik.http.routers.moodle_${_DEPLOYMENT_NAME}.tls.certresolver=le"
       - "traefik.http.routers.moodle_${_DEPLOYMENT_NAME}.entrypoints=websecure"
+      # redirect configuration
+      - "traefik.http.routers.moodle_redirect_${_DEPLOYMENT_NAME}.rule=Host(`dev.moodle.projekt-adler.eu`)"
+      - "traefik.http.routers.moodle_redirect_${_DEPLOYMENT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.moodle_redirect_${_DEPLOYMENT_NAME}.tls=true"
+      - "traefik.http.routers.moodle_redirect_${_DEPLOYMENT_NAME}.tls.certresolver=le"
+      - "traefik.http.routers.moodle_redirect_${_DEPLOYMENT_NAME}.middlewares=moodle_redirect_${_DEPLOYMENT_NAME}"
+      - "traefik.http.middlewares.moodle_redirect_${_DEPLOYMENT_NAME}.redirectregex.regex=^https://dev.moodle.projekt-adler.eu/(.*)"
+      - "traefik.http.middlewares.moodle_redirect_${_DEPLOYMENT_NAME}.redirectregex.replacement=https://${_URL_MOODLE}/$${1}"
+      - "traefik.http.middlewares.moodle_redirect_${_DEPLOYMENT_NAME}.redirectregex.permanent=true"
     env_file:
       - stack.env
 
@@ -43,6 +52,15 @@ services:
       - "traefik.http.routers.api_${_DEPLOYMENT_NAME}.tls.certresolver=le"
       - "traefik.http.routers.api_${_DEPLOYMENT_NAME}.entrypoints=websecure"
       - "traefik.http.services.api_${_DEPLOYMENT_NAME}.loadbalancer.server.port=80"
+      # redirect configuration
+      - "traefik.http.routers.moodle_redirect_${_DEPLOYMENT_NAME}.rule=Host(`dev.moodle.projekt-adler.eu`)"
+      - "traefik.http.routers.moodle_redirect_${_DEPLOYMENT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.moodle_redirect_${_DEPLOYMENT_NAME}.tls=true"
+      - "traefik.http.routers.moodle_redirect_${_DEPLOYMENT_NAME}.tls.certresolver=le"
+      - "traefik.http.routers.moodle_redirect_${_DEPLOYMENT_NAME}.middlewares=moodle_redirect_${_DEPLOYMENT_NAME}"
+      - "traefik.http.middlewares.moodle_redirect_${_DEPLOYMENT_NAME}.redirectregex.regex=^https://dev.moodle.projekt-adler.eu/(.*)"
+      - "traefik.http.middlewares.moodle_redirect_${_DEPLOYMENT_NAME}.redirectregex.replacement=https://${_URL_MOODLE}/$${1}"
+      - "traefik.http.middlewares.moodle_redirect_${_DEPLOYMENT_NAME}.redirectregex.permanent=true"
     env_file:
       - stack.env
 
@@ -59,6 +77,15 @@ services:
       - "traefik.http.routers.3d_${_DEPLOYMENT_NAME}.tls.certresolver=le"
       - "traefik.http.routers.3d_${_DEPLOYMENT_NAME}.entrypoints=websecure"
       - "traefik.http.services.3d_${_DEPLOYMENT_NAME}.loadbalancer.server.port=80"
+      # redirect configuration
+      - "traefik.http.routers.3d_redirect_${_DEPLOYMENT_NAME}.rule=Host(`dev.engine.projekt-adler.eu`)"
+      - "traefik.http.routers.3d_redirect_${_DEPLOYMENT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.3d_redirect_${_DEPLOYMENT_NAME}.tls=true"
+      - "traefik.http.routers.3d_redirect_${_DEPLOYMENT_NAME}.tls.certresolver=le"
+      - "traefik.http.routers.3d_redirect_${_DEPLOYMENT_NAME}.middlewares=3d_redirect_${_DEPLOYMENT_NAME}"
+      - "traefik.http.middlewares.3d_redirect_${_DEPLOYMENT_NAME}.redirectregex.regex=^https://dev.engine.projekt-adler.eu/(.*)"
+      - "traefik.http.middlewares.3d_redirect_${_DEPLOYMENT_NAME}.redirectregex.replacement=https://${_URL_3D}/$${1}"
+      - "traefik.http.middlewares.3d_redirect_${_DEPLOYMENT_NAME}.redirectregex.permanent=true"
     env_file:
       - stack.env
 
