@@ -57,7 +57,7 @@ services:
       - "traefik.http.routers.api_redirect_${_DEPLOYMENT_NAME}.entrypoints=websecure"
       - "traefik.http.routers.api_redirect_${_DEPLOYMENT_NAME}.tls=true"
       - "traefik.http.routers.api_redirect_${_DEPLOYMENT_NAME}.tls.certresolver=le"
-      - "traefik.http.routers.api_redirect_${_DEPLOYMENT_NAME}.middlewares=moodle_redirect_${_DEPLOYMENT_NAME}"
+      - "traefik.http.routers.api_redirect_${_DEPLOYMENT_NAME}.middlewares=api_redirect_${_DEPLOYMENT_NAME}"
       - "traefik.http.middlewares.api_redirect_${_DEPLOYMENT_NAME}.redirectregex.regex=^https://dev.api.projekt-adler.eu/(.*)"
       - "traefik.http.middlewares.api_redirect_${_DEPLOYMENT_NAME}.redirectregex.replacement=https://${_URL_BACKEND}/$${1}"
       - "traefik.http.middlewares.api_redirect_${_DEPLOYMENT_NAME}.redirectregex.permanent=true"
