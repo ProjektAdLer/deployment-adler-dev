@@ -38,7 +38,6 @@ services:
       - stack.env
 
   backend:
-    image: ghcr.io/projektadler/adlerbackend:2.4.9
     networks:
       - traefik_gateway
       - internal
@@ -57,7 +56,6 @@ services:
       - stack.env
 
   frontend:
-    image: ghcr.io/projektadler/2d_3d_adler:2.9.0
     networks:
       - traefik_gateway
     environment:
